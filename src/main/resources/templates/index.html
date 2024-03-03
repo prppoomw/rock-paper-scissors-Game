@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+   	<style>
+		   body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    margin: 50px;
+}
+
+#game-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.move {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.result {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#buttons-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#history-container {
+    margin-top: 30px;
+}
+
+#history-list {
+    list-style: none;
+    padding: 0;
+}
+
+#history-list li {
+    margin: 10px 0;
+    font-size: 16px;
+}
+#reset-container {
+    margin-top: 20px;
+}
+
+#reset-container button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #3498db; /* Blue color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#reset-container button:hover {
+    background-color: #2980b9; /* Darker blue color on hover */
+}
+
+
+	   </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="player-move" class="move">Your Move: </div>
+        <div id="opponent-move" class="move">Opponent's Move: </div>
+        <div id="result" class="result">Result: </div>
+        <div id="score" class="result" >Scores: 0</div>
+        <div id="buttons-container">
+            <button onclick="playMove('rock')">Rock</button>
+            <button onclick="playMove('paper')">Paper</button>
+            <button onclick="playMove('scissors')">Scissors</button>
+        </div>
+        <div id="history-container">
+			<div id="reset-container">
+		        <button onclick="resetGameHistory()">Reset History</button>
+		    </div>
+            <h2>Game History</h2>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
+    <script>
+		function playMove(playerMove) {
+		    fetch('http://localhost:8080/api/rps-game/play', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json',
+		        },
+		        body: JSON.stringify({
+		            playerMove: playerMove,
+		        }),
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+				console.log('Data received:', data);
+		        document.getElementById('player-move').textContent = `Your Move: ${playerMove}`;
+		        document.getElementById('opponent-move').textContent = `Opponent's Move: ${data.opponentMove}`;
+		        const resultElement = document.getElementById('result');
+		        resultElement.textContent = `Result: ${data.result}`;
+		
+		        if (data.result === 'You Win') {
+		            resultElement.style.color = 'green';
+		        } else if (data.result === 'You Lose') {
+		            resultElement.style.color = 'red';
+		        } else if (data.result === 'Tie') {
+		            resultElement.style.color = 'orange';
+		        } else {
+		            resultElement.style.color = 'black';
+		        }
+		
+		        updateGameHistory();
+		    })
+		    .catch(error => console.error('Error:', error));
+		}
+
+		function updateGameHistory() {
+		    fetch('http://localhost:8080/api/rps-game/history')
+		        .then(response => response.json())
+		        .then(data => {
+		            displayGameHistory(data);
+		        })
+		        .catch(error => console.error('Error:', error));
+		}
+		
+		function displayGameHistory(history) {
+		    const historyList = document.getElementById('history-list');
+		    const scoreDisplay = document.getElementById('score');
+		    historyList.innerHTML = '';
+		    
+		    history.reverse().slice(0, 10).forEach(game => {
+		        const listItem = document.createElement('li');
+		        
+		        if (game.result === 'You Win') {
+	            	listItem.style.color = 'green';
+		        } else if (game.result === 'You Lose') {
+		            listItem.style.color = 'red';
+		        } else if (game.result === 'Tie') {
+		            listItem.style.color = 'orange';
+		        } else {
+		            listItem.style.color = 'black';
+		        }
+		        
+		        listItem.textContent = `Player's Move: ${game.playerMove}, Opponent's Move: ${game.opponentMove}, Result: ${game.result}`;
+		        
+		        historyList.appendChild(listItem);
+		        
+		    });
+		    
+		    let wins = 0;
+		    history.forEach(game => {
+		        if (game.result === 'You Win') {
+		            wins++;
+		        }
+		        else if(game.result == 'You Lose'){
+					wins--;
+				}
+		    });
+		    scoreDisplay.textContent = `Scores: ${wins}`;
+		}
+		
+		function resetGameHistory() {
+		    fetch('http://localhost:8080/api/rps-game/reset', {
+		        method: 'DELETE',
+		        headers: {
+		            'Content-Type': 'application/json',
+		        },
+		    })
+		    .then(response => {
+				response.json();
+				window.location.reload();
+			})
+		    .catch(error => console.error('Error during reset:', error));
+		}
+		
+		document.addEventListener('DOMContentLoaded', function () {
+		    updateGameHistory();
+		});
+
+	</script>
+</body>
+</html>
