@@ -12,15 +12,21 @@ public class RpsGameService {
 	@Autowired
 	private RpsGameRepository rpsGameRepository;
 	
+	@Autowired
+	private RpsGameProducerService producer;
+	
 	public RpsGame getResult(String playerMove) {
 		String opponentMove = getOpponentMove();
 		String result = determineResult(playerMove, opponentMove);
-		saveGameHistory(playerMove, opponentMove, result);
+		//saveGameHistory(playerMove, opponentMove, result);
 		
 		RpsGame gameResult = new RpsGame();
 	    gameResult.setPlayerMove(playerMove);
 	    gameResult.setOpponentMove(opponentMove);
 	    gameResult.setResult(result);
+	    gameResult.setTimestamp(LocalDateTime.now());
+	    
+	    producer.sendMessage(gameResult);
 		
 		return gameResult;
 	}

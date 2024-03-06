@@ -38,8 +38,7 @@ public class RpsGameController {
 		try {
 			JsonNode jsonNode = objectMapper.readTree(playerMove);
 	        String playerMoveValue = jsonNode.get("playerMove").asText();
-//	        System.out.println(playerMoveValue);
-	        
+
 	        return ResponseEntity.ok()
 					.headers(rpsGameService.allowCORS())
 					.body(rpsGameService.getResult(playerMoveValue));
