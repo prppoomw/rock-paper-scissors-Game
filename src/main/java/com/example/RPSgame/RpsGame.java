@@ -1,5 +1,6 @@
 package com.example.RPSgame;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -14,7 +15,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="rps-game-history")
-public class RpsGame {
+public class RpsGame implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

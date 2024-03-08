@@ -4,8 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+
+import jakarta.persistence.TypedQuery;
 
 @Service
 public class RpsGameService {
@@ -30,7 +36,12 @@ public class RpsGameService {
 		return gameResult;
 	}
 	
+	@Cacheable(value = "gameHistoryCache")
 	public List<RpsGame> getGameHistory(){
+		return rpsGameRepository.findAll();
+	}
+	
+	public List<RpsGame> getScore(){
 		return rpsGameRepository.findAll();
 	}
 	
@@ -40,6 +51,7 @@ public class RpsGameService {
         return headers;
 	}
 	
+	@CacheEvict(value = "gameHistoryCache", allEntries = true)
 	public void deleteHistory() {
 		rpsGameRepository.deleteAll();
 	}

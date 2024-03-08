@@ -121,10 +121,11 @@ button {
 		        } else if (data.result === 'Tie') {
 		            resultElement.style.color = 'orange';
 		        } else {
-		            resultElement.style.color = 'black';
+		            resultElement.style.color = 'black';w
 		        }
 				
 				//console.log("call updat history");
+				updateScore();
 		        updateGameHistory();
 		    })
 		    .catch(error => console.error('Error:', error));
@@ -139,12 +140,32 @@ button {
 		        .catch(error => console.error('Error:', error));
 		}
 		
+		function updateScore() {
+		    fetch('http://localhost:8080/api/rps-game/score')
+		        .then(response => response.json())
+		        .then(data => {
+		            const scoreDisplay = document.getElementById('score');
+				    
+				    let wins = 0;
+				    data.forEach(game => {
+				        if (game.result === 'You Win') {
+				            wins++;
+				        }
+				        else if(game.result == 'You Lose'){
+							wins--;
+						}
+				    });
+				    scoreDisplay.textContent = `Scores: ${wins}`;
+		        })
+		        .catch(error => console.error('Error:', error));
+		}
+		
 		function displayGameHistory(history) {
 		    const historyList = document.getElementById('history-list');
-		    const scoreDisplay = document.getElementById('score');
 		    historyList.innerHTML = '';
 		    
 		    history.reverse().slice(0, 10).forEach(game => {
+			//history.forEach(game => {
 		        const listItem = document.createElement('li');
 		        
 		        if (game.result === 'You Win') {
@@ -162,18 +183,8 @@ button {
 		        historyList.appendChild(listItem);
 		        
 		    });
-		    
-		    let wins = 0;
-		    history.forEach(game => {
-		        if (game.result === 'You Win') {
-		            wins++;
-		        }
-		        else if(game.result == 'You Lose'){
-					wins--;
-				}
-		    });
-		    scoreDisplay.textContent = `Scores: ${wins}`;
 		}
+		
 		
 		function resetGameHistory() {
 		    fetch('http://localhost:8080/api/rps-game/reset', {
@@ -190,6 +201,7 @@ button {
 		}
 		
 		document.addEventListener('DOMContentLoaded', function () {
+			updateScore();
 		    updateGameHistory();
 		});
 

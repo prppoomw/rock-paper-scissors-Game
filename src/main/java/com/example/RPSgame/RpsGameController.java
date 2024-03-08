@@ -53,6 +53,11 @@ public class RpsGameController {
 		return rpsGameService.getGameHistory();
 	}
 	
+	@GetMapping("/score")
+	public List<RpsGame> gameScore(){
+		return rpsGameService.getScore();
+	}
+	
 	@DeleteMapping("/reset")
 	public ResponseEntity<String> reset(){
 		rpsGameService.deleteHistory();
