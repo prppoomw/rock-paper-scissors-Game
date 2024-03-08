@@ -18,7 +18,6 @@ public class RpsGameService {
 	public RpsGame getResult(String playerMove) {
 		String opponentMove = getOpponentMove();
 		String result = determineResult(playerMove, opponentMove);
-		//saveGameHistory(playerMove, opponentMove, result);
 		
 		RpsGame gameResult = new RpsGame();
 	    gameResult.setPlayerMove(playerMove);
@@ -65,12 +64,8 @@ public class RpsGameService {
         }
 	}
 	
-	private void saveGameHistory(String playerMove, String opponentMove, String result) {
-		RpsGame game = new RpsGame();
-		game.setPlayerMove(playerMove);
-	    game.setOpponentMove(opponentMove);
-	    game.setResult(result);
-	    game.setTimestamp(LocalDateTime.now());
+	public void saveGameHistory(RpsGame game) {
+		//System.out.print("service--->" + game.getPlayerMove() + game.getOpponentMove() + game.getResult());
 		rpsGameRepository.save(game);
 	}
 }
