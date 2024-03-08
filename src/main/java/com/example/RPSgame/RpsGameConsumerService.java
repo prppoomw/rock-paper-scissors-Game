@@ -11,13 +11,15 @@ public class RpsGameConsumerService {
 	//private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(RpsGameConsumerService.class);
 
 	@Autowired
-	private RpsGameService rpsGameService;
+	private RpsGameRepository rpsGameRepository;
+	//private RpsGameService rpsGameService;
 	
 	@KafkaListener(topics = RpsGameConstant.TOPIC_NAME, groupId = RpsGameConstant.GROUP_ID)
 	public void consumeMessage(RpsGame data) {
 		//LOGGER.info(String.format(data.getPlayerMove()) + String.format(data.getOpponentMove()) + String.format(data.getResult()));
 		
-		rpsGameService.saveGameHistory(data);
+		rpsGameRepository.save(data);
+		//rpsGameService.saveGameHistory(data);
 	}
 	
 }
