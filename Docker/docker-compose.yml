@@ -1,0 +1,98 @@
+name: rpsgame-quickstart
+networks:
+  rpsgame:
+    driver: bridge
+volumes:
+  redpanda: null
+  redis: null
+  db: null
+services:
+  # Redpanda (=Kafka) #
+  redpanda:
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+      - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+      - --rpc-addr redpanda:33145
+      - --advertise-rpc-addr redpanda:33145
+      - --mode dev-container
+      - --smp 1
+      - --default-log-level=info
+    image: docker.redpanda.com/redpandadata/redpanda:v24.3.2
+    container_name: redpanda
+    volumes:
+      - redpanda:/var/lib/redpanda/data
+    networks:
+      - rpsgame
+    ports:
+      - 18081:18081
+      - 18082:18082
+      - 19092:19092
+      - 19644:9644
+  # Redpanda Console #
+  console:
+    container_name: redpanda-console
+    image: docker.redpanda.com/redpandadata/console:v2.8.1
+    networks:
+      - rpsgame
+    entrypoint: /bin/sh
+    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console -config.filepath=${CONFIG_FILEPATH:-/tmp/config.yml}'
+    volumes:
+      - ./config:/tmp/config/
+    environment:
+      CONFIG_FILEPATH: ${CONFIG_FILEPATH:-/tmp/config.yml}
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda:9092"]
+          schemaRegistry:
+            enabled: true
+            urls: ["http://redpanda:8081"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda:9644"]
+    ports:
+      - 8080:8080
+    depends_on:
+      - redpanda
+  # MySQL #
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    volumes:
+      - db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - rpsgame
+    ports:
+      - '3306:3306'
+  # PhpMyAdmin #
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root 
+    networks:
+      - rpsgame
+  # Redis #
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20
+    volumes: 
+      - redis:/data
