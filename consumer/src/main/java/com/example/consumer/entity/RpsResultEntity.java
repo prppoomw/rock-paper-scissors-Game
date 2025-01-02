@@ -3,6 +3,7 @@ package com.example.consumer.entity;
 import com.example.consumer.enums.ResultEnum;
 import com.example.consumer.enums.RpsEnum;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serial;
