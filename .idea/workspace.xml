@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="479d0d9c-4831-48ee-8d92-dc6b4a96be5e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/controller/RpsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/controller/RpsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/entity/RpsResultEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/entity/RpsResultEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/producer/src/main/java/com/example/producer/controller/RpsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/producer/src/main/java/com/example/producer/controller/RpsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/config/KafkaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/config/KafkaConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/repository/PlayerScoreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/repository/PlayerScoreRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/util/CustomDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/consumer/src/main/java/com/example/consumer/util/CustomDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/producer/src/main/java/com/example/producer/service/impl/RpsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/producer/src/main/java/com/example/producer/service/impl/RpsServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
