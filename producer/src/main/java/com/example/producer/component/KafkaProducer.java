@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.InternalException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Component
@@ -31,6 +28,7 @@ public class KafkaProducer {
             .build();
 
     public void sendMessage(RpsResult rpsResult) {
+        log.info("kafka config: {}, topic: {}, data: {}", kafkaTemplate.getProducerFactory().getConfigurationProperties(), topic, rpsResult);
         try {
             String data = writeMapper.writeValueAsString(rpsResult);
             String key = rpsResult.getPlayerName();
