@@ -14,11 +14,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -33,11 +30,7 @@ import java.util.Map;
 @EmbeddedKafka(partitions = 1, topics = {"test-topic"})
 @ContextConfiguration(classes = {KafkaTestConfig.class, KafkaProducer.class})
 @TestPropertySource(properties = {"rps.kafka.topic=test-topic"})
-public class KafkaProducerTest {
-    private static final Logger log = LoggerFactory.getLogger(KafkaProducerTest.class);
-
-    @Autowired
-    private KafkaTemplate<String, String> testKafkaTemplate;
+public class KafkaProducerIntegrationTest {
 
     @Autowired
     private KafkaProducer kafkaProducer;
@@ -65,7 +58,7 @@ public class KafkaProducerTest {
     }
 
     @Test
-    public void testSendMessageShouldSendMessageToKafka() throws InterruptedException, JsonProcessingException {
+    public void testSendMessageShouldSendMessageToKafka() throws JsonProcessingException {
         // Arrange
         RpsResult rpsResult = RpsResult.builder()
                 .playerName("test-player-name")

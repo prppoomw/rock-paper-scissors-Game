@@ -28,7 +28,6 @@ public class KafkaProducer {
             .build();
 
     public void sendMessage(RpsResult rpsResult) {
-        log.info("kafka config: {}, topic: {}, data: {}", kafkaTemplate.getProducerFactory().getConfigurationProperties(), topic, rpsResult);
         try {
             String data = writeMapper.writeValueAsString(rpsResult);
             String key = rpsResult.getPlayerName();
