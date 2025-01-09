@@ -58,7 +58,7 @@ public class KafkaProducerIntegrationTest {
     }
 
     @Test
-    public void testSendMessageShouldSendMessageToKafka() throws JsonProcessingException {
+    public void testSendMessageWithKafkaBroker() throws JsonProcessingException {
         // Arrange
         RpsResult rpsResult = RpsResult.builder()
                 .playerName("test-player-name")
@@ -67,14 +67,15 @@ public class KafkaProducerIntegrationTest {
                 .gameResult(ResultEnum.TIE)
                 .timestamp(new Date())
                 .build();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String expectedResult = objectMapper.writeValueAsString(rpsResult);
+
 
         // Act
         kafkaProducer.sendMessage(rpsResult);
+        ConsumerRecord<String, String> record = KafkaTestUtils.getSingleRecord(consumer, "test-topic");
 
         // Assert
-        ConsumerRecord<String, String> record = KafkaTestUtils.getSingleRecord(consumer, "test-topic");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedResult = objectMapper.writeValueAsString(rpsResult);
         Assertions.assertEquals(rpsResult.getPlayerName(), record.key());
         Assertions.assertEquals(expectedResult, record.value());
     }

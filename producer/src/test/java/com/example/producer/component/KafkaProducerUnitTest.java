@@ -32,7 +32,7 @@ public class KafkaProducerUnitTest {
     }
 
     @Test
-    public void testSendMessage() throws JsonProcessingException {
+    public void testSendMessageWithMock() throws JsonProcessingException {
         // Arrange
         RpsResult rpsResult = RpsResult.builder()
                 .playerName("test-player-name")
@@ -41,13 +41,13 @@ public class KafkaProducerUnitTest {
                 .gameResult(ResultEnum.TIE)
                 .timestamp(new Date())
                 .build();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String expectedResult = objectMapper.writeValueAsString(rpsResult);
 
         // Act
         kafkaProducer.sendMessage(rpsResult);
 
         // Assert
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedResult = objectMapper.writeValueAsString(rpsResult);
         Mockito.verify(kafkaTemplate).send(
                 Mockito.eq("test-topic"),
                 Mockito.eq(rpsResult.getPlayerName()),
