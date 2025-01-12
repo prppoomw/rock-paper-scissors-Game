@@ -25,7 +25,7 @@ public class KafkaConsumer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @KafkaListener(topics = "${rps.kafka.topic}", groupId = "${rps.kafka.group_id}")
-    private void consumeMessage(ConsumerRecord<String, JsonNode> record) {
+    public void consumeMessage(ConsumerRecord<String, JsonNode> record) {
         try {
             log.info("consume message: offset {}, key {}, value {}", record.offset(), record.key(), record.value());
             saveResult(record);
