@@ -1,0 +1,15 @@
+scrape_configs:
+  - job_name: 'rps-game-producer'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 1s
+    static_configs:
+      - targets: ['locahost:8084']
+        labels:
+          application: 'RPS game producer'
+  - job_name: 'rps-game-consumer'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 1s
+    static_configs:
+      - targets: ['locahost:8085']
+        labels:
+          application: 'RPS game consumer'
