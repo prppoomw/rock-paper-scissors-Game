@@ -17,3 +17,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+
+networks:
+  my_network:
+    driver: bridge
