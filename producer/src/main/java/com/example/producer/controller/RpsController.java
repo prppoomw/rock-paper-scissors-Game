@@ -1,5 +1,6 @@
 package com.example.producer.controller;
 
+import com.example.producer.component.AppMetric;
 import com.example.producer.model.PlayerActionRequest;
 import com.example.producer.service.RpsService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,13 @@ public class RpsController {
     @Autowired
     private RpsService rpsService;
 
+    @Autowired
+    private AppMetric appMetric;
+
     @PostMapping("/play")
     public ResponseEntity<?> playGame(@Validated @RequestBody PlayerActionRequest playerActionRequest) {
         try {
+            appMetric.increasePlayRequestCounter();
             return rpsService.playGame(playerActionRequest);
         } catch (Exception e) {
             log.error("error: {}", e.getMessage(), e);
