@@ -1,0 +1,8 @@
+10-02-2025 14:57:43.739 [http-nio-8088-exec-2] WARN  TEST_LOGGER.testLog - this is warn log.
+10-02-2025 14:59:15.884 [http-nio-8088-exec-2] INFO  TEST_LOGGER.testLog - this is info log.
+10-02-2025 14:59:28.646 [http-nio-8088-exec-3] INFO  TEST_LOGGER.testLog - this is info log.
+10-02-2025 15:10:12.595 [http-nio-8088-exec-2] WARN  TEST_LOGGER.testLog - this is warn log.
+10-02-2025 15:26:15.868 [http-nio-8088-exec-2] WARN  TEST_LOGGER.testLog - this is warn log.
+10-02-2025 15:29:15.031 [http-nio-8088-exec-5] WARN  TEST_LOGGER.testLog - this is warn log.
+10-02-2025 15:30:36.851 [http-nio-8088-exec-8] WARN  TEST_LOGGER.testLog - this is warn log.
+10-02-2025 15:45:38.910 [http-nio-8088-exec-2] ERROR TEST_LOGGER.testLog - this is error log.
