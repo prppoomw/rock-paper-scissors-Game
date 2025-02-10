@@ -1,0 +1,11 @@
+- pipeline.id: pipeline-input
+  path.config: "/usr/share/logstash/pipeline/pipeline-input-filebeat.conf"
+  pipeline.workers: 1
+
+- pipeline.id: pipeline-main-process
+  path.config: "/usr/share/logstash/pipeline/pipeline-main-processing.conf"
+  pipeline.workers: 1
+
+- pipeline.id: pipeline-output-elasticsearch
+  path.config: "/usr/share/logstash/pipeline/pipeline-output-elasticsearch.conf"
+  pipeline.workers: 1
